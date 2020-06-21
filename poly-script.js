@@ -1,46 +1,56 @@
-(function (self) {
-	var elementOfContent = document.getElementById('poly');
+window.onload = function () {
+	(function (self) {
+		var elementOfContent = document.getElementById('poly');
 
-	self.init = function () {
-		self.clearPoly();
-		self.createPoly(points);
-	};
+		self.init = function () {
+			var points = [
+			    { x : 100, y: 100 },
+			    { x : 200, y: 50 },
+			    { x : 300, y: 50 },
+			    { x : 400, y: 200 },
+			    { x : 350, y: 250 },
+			    { x : 200, y: 300 },
+			    { x : 150, y: 300 },
+			]
 
-	self.clearPoly = function () {
-		while (elementOfContent.firstChild) {
-			elementOfContent.removeChild(elementOfContent.firstChild);
-		}
-	};
+			self.clearPoly();
+			self.createPoly(points);
+		};
 
-	self.createPoly = function (points, color = black) {
-		if (points.length < 2) {
-			console.log('Not enought points');
-			return;
-		}
+		self.clearPoly = function () 
+	{		while (elementOfContent.firstChild) {
+				elementOfContent.removeChild(elementOfContent.firstChild);
+			}
+		};
 
-		var elementOfSvg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-		var pathOfSvg = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-		var path = 'M' + points[0].x + ' ' + points[0].y;
+		self.createPoly = function (points, color = 'black') {
+			if (points.length < 2) {
+				console.log('Not enought points');
+				return;
+			}
 
-		for(const point of points) {
-			path += ' L' + point.x + ' ' + point.y;
-		}
-	
-		path += " Z";
-	
-		svgPath.setAttribute('d', path);
-		svgPath.setAttribute('stroke', color);
+			var elementOfSvg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+			var pathOfSvg = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+			var path = 'M' + points[0].x + ' ' + points[0].y;
 
-		svgElement.setAttribute('height', "500"); 
-		svgElement.setAttribute('width', "500");
-		svgElement.setAttribute('style', 'position: absolute;');
-		svgElement.setAttribute('fill', 'transparent');
+			for(const point of points) {
+				path += ' L' + point.x + ' ' + point.y;
+			}
+		
+			path += " Z";
+		
+			pathOfSvg.setAttribute('d', path);
+			pathOfSvg.setAttribute('stroke', color);
 
-		svgElement.appendChild(svgPath);
-		content.appendChild(svgElement);
-	};
+			elementOfSvg.setAttribute('height', "500"); 
+			elementOfSvg.setAttribute('width', "500");
+			elementOfSvg.setAttribute('style', 'position: absolute;');
+			elementOfSvg.setAttribute('fill', 'transparent');
 
-	window.onload = function () {
+			elementOfSvg.appendChild(pathOfSvg);
+			elementOfContent.appendChild(elementOfSvg);
+		};
+
 		self.init();
-	};
-}({}))
+	}({}))
+};
