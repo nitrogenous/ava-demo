@@ -14,7 +14,7 @@ window.onload = function () {
 			]
 
 			self.clearPoly();
-			self.createPoly(points);
+			self.createPoly(points, 'black');
 			self.setMouseEvents();
 		};
 
@@ -24,7 +24,7 @@ window.onload = function () {
 			}
 		};
 
-		self.createPoly = function (points, color = 'black') {
+		self.createPoly = function (points, color) {
 			console.log(points);
 			if (points.length < 2) {
 				console.log('Not enought points');
@@ -35,9 +35,9 @@ window.onload = function () {
 			var pathOfSvg = document.createElementNS("http://www.w3.org/2000/svg", 'path');
 			var path = 'M' + points[0].x + ' ' + points[0].y;
 
-			for(const point of points) {
+			points.forEach(function (point) {
 				path += ' L' + point.x + ' ' + point.y;
-			}
+			});
 		
 			path += " Z";
 		
@@ -69,12 +69,12 @@ window.onload = function () {
 
 
 		self.onMouseUp = function () {
-			const poly1 = [ { x : 100, y: 100 },
+			var poly1 = [ { x : 100, y: 100 },
 			{ x : 200, y: 50 },
 			{ x : 300, y: 50 },
 			{ x : 400, y: 200 },
 			{x: 150,y: 150}];
-			const poly2 = [ {x: 150,y: 150}, { x : 400, y: 200 },   { x : 350, y: 250 },
+			var poly2 = [ {x: 150,y: 150}, { x : 400, y: 200 },   { x : 350, y: 250 },
 			{ x : 200, y: 300 },
 			{ x : 150, y: 300 },];
 
