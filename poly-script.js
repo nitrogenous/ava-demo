@@ -7,7 +7,6 @@
 	};
 
 	self.clearPoly = function () {
-		console.log(document.getElementById('poly'));
 		while (elementOfContent.firstChild) {
 			elementOfContent.removeChild(elementOfContent.firstChild);
 		}
