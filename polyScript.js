@@ -200,6 +200,7 @@ window.onload = function () {
 	    };
 
 	    self.createSplittedPolys = function (newPolys) {
+	    	// self.removeElementById('cuttingLine'); // For multiple cutting 
 	    	self.reset();
 
 	    	self.createSvgPath('first-poly', elementIds.mainSvg, newPolys.firstPoly, 'green');
