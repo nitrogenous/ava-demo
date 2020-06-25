@@ -21,10 +21,10 @@ window.onload = function () {
 			{ x : 100, y: 100 },
 		    { x : 200, y: 50 },
 		    { x : 300, y: 50 },
-		    { x : 351.5625, y: 127.34375 },
+		    { x : 400, y: 200 },
 		    { x : 350, y: 250 },
 		    { x : 200, y: 300 },
-		    { x : 150, y: 300 }
+		    { x : 150, y: 300 },
 	    ];
 
 	    self.init = function () {
@@ -123,6 +123,11 @@ window.onload = function () {
 		    		endPoint: cuttingLine.endPoint
 	    		}, initialPoints);
 
+	    	if(intersects.length < 2) {
+	    		console.warn('Cutting Line Is To Shor or Not Cutting The Shape');
+	    		return;
+	    	}
+
 	    	var newPolys = self.splitPoly(initialPoints, intersects);
 
 	    	self.createSplittedPolys(newPolys);
@@ -186,9 +191,6 @@ window.onload = function () {
 
 	    	pointsOfPoly.unshift(intersects[1].point);
 	    	pointsOfPoly.push(intersects[0].point);
-
-	    	console.log(firstPoly)
-	    	console.log(pointsOfPoly)
 
 	    	return {
 	    		firstPoly: firstPoly,
