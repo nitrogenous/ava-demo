@@ -30,7 +30,7 @@ window.onload = function () {
 	    self.init = function () {
 	    	self.reset();
 	    	self.createSvgPath(elementIds.initialPoly, elementIds.mainSvg, initialPoints, 'black');
-
+	    	self.setMouseEvents();
 	    };
 
 	    self.reset = function () {
@@ -39,7 +39,7 @@ window.onload = function () {
 	    	}
 
 	    	elementOfContent.appendChild(self.createElementOfSvg(elementIds.mainSvg));
-	    }
+	    };
 
 	    self.createElementOfSvg = function (elementId) {
 	    	var elementOfSvg =  document.createElementNS("http://www.w3.org/2000/svg", 'svg');
@@ -74,6 +74,25 @@ window.onload = function () {
 
 	    	document.getElementById(appendElementId).appendChild(pathOfSvg);
 	    };
+
+	    self.setMouseEvents = function () {
+			document.addEventListener('mousedown', self.onMouseDown);
+	    	document.addEventListener('mousemove', self.onMouseMove);
+			document.addEventListener('mouseup', self.onMouseUp);
+	    };
+
+	    self.onMouseDown = function () {
+	    	return;
+	    };
+
+	    self.onMouseMove = function () {
+	    	return;
+	    };
+
+	    self.onMouseUp = function () {
+	    	return;
+	    };
+
 
 	    self.init();
 	} ({}))	
