@@ -3,7 +3,8 @@ window.onload = function () {
 		var elementOfContent = document.getElementById('content');
 		var elementIds = {
 			mainSvg: 'svg-main',
-			initialPoly: 'initial-poly'
+			initialPoly: 'initial-poly',
+			cuttingLine: 'cuttingLine'
 		};
 		var cuttingLine = {
 			isMoving: false,
@@ -12,7 +13,7 @@ window.onload = function () {
 				y: null
 			},
 			endPoint: {
-				x: null,
+				x: 12,
 				y: null
 			}
 		};
@@ -34,12 +35,16 @@ window.onload = function () {
 	    };
 
 	    self.reset = function () {
-	    	if ( document.getElementById(elementIds.mainSvg) !== null ) {
-	    		document.getElementById(elementIds.mainSvg).remove();
-	    	}
+	    	self.removeElementById(elementIds.mainSvg);
 
 	    	elementOfContent.appendChild(self.createElementOfSvg(elementIds.mainSvg));
 	    };
+
+	    self.removeElementById = function (elementId) {
+	    	if ( document.getElementById(elementId) !== null ) {
+	    		document.getElementById(elementId).remove();
+	    	}
+	    }
 
 	    self.createElementOfSvg = function (elementId) {
 	    	var elementOfSvg =  document.createElementNS("http://www.w3.org/2000/svg", 'svg');
@@ -81,17 +86,43 @@ window.onload = function () {
 			document.addEventListener('mouseup', self.onMouseUp);
 	    };
 
-	    self.onMouseDown = function () {
+	    self.onMouseDown = function (event) {
+	    	cuttingLine = {
+	    		isMoving: true,
+	    		startPoint: {
+	    			x: event.clientX,
+	    			y: event.clientY
+	    		}
+	    	}
 	    	return;
 	    };
 
-	    self.onMouseMove = function () {
+	    self.onMouseMove = function (event) {
+	    	if (!cuttingLine.isMoving) {
+	    		return;
+	    	}
+
+	    	cuttingLine.endPoint = {
+    			x: event.clientX,
+    			y: event.clientY
+	    	}
+
+	    	self.removeElementById(elementIds.cuttingLine);
+	    	self.createSvgPath(elementIds.cuttingLine, elementIds.mainSvg, [cuttingLine.startPoint, cuttingLine.endPoint], 'red');
 	    	return;
 	    };
 
-	    self.onMouseUp = function () {
+	    self.onMouseUp = function (event) {
+	    	cuttingLine = {
+	    		isMoving: false,
+	    		endPoint: {
+	    			x: event.clientX,
+	    			y: event.clientY
+	    		}
+	    	};
 	    	return;
 	    };
+
 
 
 	    self.init();
