@@ -2,7 +2,8 @@ window.onload = function () {
 	(function (self) {
 		var elementOfContent = document.getElementById('content');
 		var elementIds = {
-			mainSvg: 'svg-main'
+			mainSvg: 'svg-main',
+			initialPoly: 'initial-poly'
 		};
 		var cuttingLine = {
 			isMoving: false,
@@ -15,7 +16,7 @@ window.onload = function () {
 				y: null
 			}
 		};
-		var boardPoints = [
+		var initialPoints = [
 			{ x : 100, y: 100 },
 		    { x : 200, y: 50 },
 		    { x : 300, y: 50 },
@@ -28,6 +29,8 @@ window.onload = function () {
 
 	    self.init = function () {
 	    	self.reset();
+	    	self.createSvgPath(elementIds.initialPoly, initialPoints, 'black');
+
 	    };
 
 	    self.reset = function () {
@@ -41,15 +44,36 @@ window.onload = function () {
 	    self.createElementOfSvg = function (elementId) {
 	    	var elementOfSvg =  document.createElementNS("http://www.w3.org/2000/svg", 'svg');
 
-			elementOfSvg.setAttribute('id', elementId);
-			elementOfSvg.setAttribute('height', "500"); 
 			elementOfSvg.setAttribute('width', "500");
+			elementOfSvg.setAttribute('height', "500"); 
+			elementOfSvg.setAttribute('id', elementId);
 			elementOfSvg.setAttribute('fill', 'transparent');
 			elementOfSvg.setAttribute('style', 'position: absolute;');
 
 			return elementOfSvg;
 	    };
 
+	    self.createSvgPath = function (elementId, points, color) {
+	    	if (points.length < 2) {
+	    		console.warn('Not enough poly points');
+	    		return;
+	    	}
+
+	    	var pathOfSvg = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+	    	var path = 'M' + points[0].x + ' ' + points[0].y;
+
+	    	points.forEach(function (point) {
+	    		path += ' L ' + point.x + ' ' + point.y;
+	    	});
+
+	    	path += ' Z';
+
+	    	pathOfSvg.setAttribute('d', path);
+	    	pathOfSvg.setAttribute('stroke', color);
+	    	pathOfSvg.setAttribute('id', elementId);
+
+	    	document.getElementById(elementIds.mainSvg).appendChild(pathOfSvg);
+	    };
 
 	    self.init();
 	} ({}))	
