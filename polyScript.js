@@ -184,13 +184,14 @@ window.onload = function () {
 	    };
 
 	    self.splitPoly = function (pointsOfPoly, intersects) {
-	    	var firstPoly = pointsOfPoly.splice(intersects[0].index, intersects[1].index);
+	    	var firstPoly = pointsOfPoly.splice(
+	    		intersects[0].index, 
+	    		intersects[1].index
+	    	);
 
-	    	firstPoly.unshift(intersects[0].point);
-	    	firstPoly.push(intersects[1].point);
+	    	firstPoly = [ intersects[0].point, ...firstPoly, intersects[1].point ];
 
-	    	pointsOfPoly.unshift(intersects[1].point);
-	    	pointsOfPoly.push(intersects[0].point);
+	    	pointsOfPoly.splice(intersects[0].index, 0, intersects[0].point, intersects[1].point)
 
 	    	return {
 	    		firstPoly: firstPoly,
