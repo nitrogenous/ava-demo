@@ -24,8 +24,7 @@ window.onload = function () {
 		    { x : 351.5625, y: 127.34375 },
 		    { x : 350, y: 250 },
 		    { x : 200, y: 300 },
-		    { x : 150, y: 300 },
-		    { x: 122.72727272727272, y: 190.9090909090909},
+		    { x : 150, y: 300 }
 	    ];
 
 	    self.init = function () {
@@ -113,14 +112,31 @@ window.onload = function () {
 	    };
 
 	    self.onMouseUp = function (event) {
-	    	cuttingLine = {
-	    		isMoving: false,
-	    		endPoint: {
-	    			x: event.clientX,
-	    			y: event.clientY
-	    		}
+	    	cuttingLine.isMoving = false;
+	    	cuttingLine.endPoint = {
+    			x: event.clientX,
+    			y: event.clientY
 	    	};
+	    	
+	    	console.log(cuttingLine);
+
 	    	return;
+	    };
+
+
+	    self.isLinesIntersect = function (firstLine, secondLine) {
+	    	var det, gamma, lambda;
+
+			det = (firstLine.endPoint.x - firstLine.startPoint.x) * (secondLine.endPoint.y - secondLine.startPoint.y) - (secondLine.endPoint.x - secondLine.startPoint.x) * (firstLine.endPoint.y - firstLine.startPoint.y);
+
+			if (det === 0) {
+				return false;
+			} else {
+				lambda = ((secondLine.endPoint.y - secondLine.startPoint.y) * (secondLine.endPoint.x - firstLine.startPoint.x) + (secondLine.startPoint.x - secondLine.endPoint.x) * (secondLine.endPoint.y - firstLine.startPoint.y)) / det;
+				gamma = ((firstLine.startPoint.y - firstLine.endPoint.y) * (secondLine.endPoint.x - firstLine.startPoint.x) + (firstLine.endPoint.x - firstLine.startPoint.x) * (secondLine.endPoint.y - firstLine.startPoint.y)) / det;
+
+				return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+			}
 	    };
 
 
