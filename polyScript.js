@@ -117,12 +117,26 @@ window.onload = function () {
     			x: event.clientX,
     			y: event.clientY
 	    	};
-	    	
-	    	console.log(cuttingLine);
+
+	    	self.findCollidingLines({startPoint: cuttingLine.startPoint, endPoint: cuttingLine.endPoint}, initialPoints);
 
 	    	return;
 	    };
 
+	    self.findCollidingLines = function (cuttingLine, polyLines) {
+	    	for (var i = 0; i < polyLines.length; i++) {
+	    		var secondPointIndex = i + 1 === polyLines.length ? 0 : i + 1;
+	    		var secondLine = {
+	    			startPoint: polyLines[i], 
+	    			endPoint: polyLines[secondPointIndex]
+	    		};
+
+	    		if (self.isLinesIntersect(cuttingLine, secondLine)) {
+	    			console.log(self.getIntersectionPoint(cuttingLine, secondLine));
+	    		}
+
+	    	}
+	    }
 
 	    self.isLinesIntersect = function (firstLine, secondLine) {
 	    	var det, gamma, lambda;
@@ -139,7 +153,14 @@ window.onload = function () {
 			}
 	    };
 
-
+	    self.getIntersectionPoint = function (firstLine, secondLine) {
+	    	return math.intersect(
+	    		[firstLine.startPoint.x, firstLine.startPoint.y],
+	    		[firstLine.endPoint.x, firstLine.endPoint.y],
+	    		[secondLine.startPoint.x, secondLine.startPoint.y],
+	    		[secondLine.endPoint.x, secondLine.endPoint.y]
+	    	);
+	    };
 
 	    self.init();
 	} ({}))	
