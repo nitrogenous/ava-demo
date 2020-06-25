@@ -118,12 +118,21 @@ window.onload = function () {
     			y: event.clientY
 	    	};
 
-	    	self.findCollidingLines({startPoint: cuttingLine.startPoint, endPoint: cuttingLine.endPoint}, initialPoints);
+	    	var intersects = self.findIntersectDetails({
+		    		startPoint: cuttingLine.startPoint, 
+		    		endPoint: cuttingLine.endPoint
+	    		}, initialPoints);
+
+	    	var newPolys = self.splitPoly(initialPoints, intersects);
+
+	    	self.createSplittedPolys(newPolys);
 
 	    	return;
 	    };
 
-	    self.findCollidingLines = function (cuttingLine, polyLines) {
+	    self.findIntersectDetails = function (cuttingLine, polyLines) {
+	    	var intersectDetails = [];
+
 	    	for (var i = 0; i < polyLines.length; i++) {
 	    		var secondPointIndex = i + 1 === polyLines.length ? 0 : i + 1;
 	    		var secondLine = {
@@ -132,10 +141,15 @@ window.onload = function () {
 	    		};
 
 	    		if (self.isLinesIntersect(cuttingLine, secondLine)) {
-	    			console.log(self.getIntersectionPoint(cuttingLine, secondLine));
-	    		}
+	    			intersectDetails.push({
+	    				index: intersectDetails.length > 0 ? i : i + 1,
+	    				point: self.getIntersectionPoint(cuttingLine, secondLine)
+	    			})
 
+	    		}
 	    	}
+    		
+    		return intersectDetails;
 	    }
 
 	    self.isLinesIntersect = function (firstLine, secondLine) {
@@ -154,12 +168,39 @@ window.onload = function () {
 	    };
 
 	    self.getIntersectionPoint = function (firstLine, secondLine) {
-	    	return math.intersect(
+	    	var intersectionPoints =  math.intersect(
 	    		[firstLine.startPoint.x, firstLine.startPoint.y],
 	    		[firstLine.endPoint.x, firstLine.endPoint.y],
 	    		[secondLine.startPoint.x, secondLine.startPoint.y],
 	    		[secondLine.endPoint.x, secondLine.endPoint.y]
 	    	);
+
+	    	return {x: intersectionPoints[0], y: intersectionPoints[1]};
+	    };
+
+	    self.splitPoly = function (pointsOfPoly, intersects) {
+	    	var firstPoly = pointsOfPoly.splice(intersects[0].index, intersects[1].index);
+
+	    	firstPoly.unshift(intersects[0].point);
+	    	firstPoly.push(intersects[1].point);
+
+	    	pointsOfPoly.unshift(intersects[1].point);
+	    	pointsOfPoly.push(intersects[0].point);
+
+	    	console.log(firstPoly)
+	    	console.log(pointsOfPoly)
+
+	    	return {
+	    		firstPoly: firstPoly,
+	    		secondPoly: pointsOfPoly
+	    	}
+	    };
+
+	    self.createSplittedPolys = function (newPolys) {
+	    	self.reset();
+
+	    	self.createSvgPath('first-poly', elementIds.mainSvg, newPolys.firstPoly, 'green');
+	    	self.createSvgPath('second-poly', elementIds.mainSvg, newPolys.secondPoly, 'blue');
 	    };
 
 	    self.init();
