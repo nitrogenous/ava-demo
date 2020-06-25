@@ -29,7 +29,7 @@ window.onload = function () {
 
 	    self.init = function () {
 	    	self.reset();
-	    	self.createSvgPath(elementIds.initialPoly, initialPoints, 'black');
+	    	self.createSvgPath(elementIds.initialPoly, elementIds.mainSvg, initialPoints, 'black');
 
 	    };
 
@@ -53,7 +53,7 @@ window.onload = function () {
 			return elementOfSvg;
 	    };
 
-	    self.createSvgPath = function (elementId, points, color) {
+	    self.createSvgPath = function (elementId, appendElementId, points, color) {
 	    	if (points.length < 2) {
 	    		console.warn('Not enough poly points');
 	    		return;
@@ -72,7 +72,7 @@ window.onload = function () {
 	    	pathOfSvg.setAttribute('stroke', color);
 	    	pathOfSvg.setAttribute('id', elementId);
 
-	    	document.getElementById(elementIds.mainSvg).appendChild(pathOfSvg);
+	    	document.getElementById(appendElementId).appendChild(pathOfSvg);
 	    };
 
 	    self.init();
